@@ -69,17 +69,9 @@ const getRecipesList = function (e) {
 
   // getIngredient = searchLabel.value;
 
-  // const recipe = recipes.filter(recipe =>
-  //   recipe.ingredients.includes(...getIngredient)
-  // );
-  let recipe = [];
-
-  recipes.forEach(function (recipes) {
-    if (recipes.ingredients.includes(...getIngredient)) {
-      recipe += recipes;
-    }
-  });
-
+  const recipe = recipes.filter(recipe =>
+    recipe.ingredients.includes(...getIngredient)
+  );
   // const intersection = array1.filter(el => array2.includes(el));
 
   recipe.forEach(function (rec) {
