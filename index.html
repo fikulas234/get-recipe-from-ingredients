@@ -5,6 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Shakes recipes</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -14,15 +21,34 @@
       </header>
 
       <section>
-        <form class="search">
-          <input class="search__input" type="text" />
-          <button class="search__btn">Search</button>
+        <form class="search-box">
+          <input class="search__input" type="text" placeholder="What can I make with..."/>
+          <button class="search__btn btn"><i class="fas fa-search"></i></button>
         </form>
       </section>
-
+      <section class="your-ingredients-section remove">
+        <div class="your__ingredients">
+          <h3>Your ingredients:</h3>
+        </div>
+        <div class="your-ingredients-container">
+          <!-- <button>
+            <span>Onion</span>
+          </button>
+          <button>
+            <span>Garlic</span>
+          </button>
+          <button>
+            <span>Potato</span>
+          </button>
+        </div> -->
+      </section>
+      <div class="try">
+        <p><span>Try:</span> 'Milk'</p>
+      </div>
+      <div id="meal">
       <section class="found-recipes">
         <div class="recipe-container">
-          <div class="img"><img src="img/ziti-style.webp" alt="" /></div>
+          <!-- <div class="img"><img src="img/ziti-style.webp" alt="" /></div>
           <div class="recipe__item">
             <p>
               <h3>Baked Ziti</h3>
@@ -35,10 +61,35 @@
                 parmesan
               </ul>
             </p>
-          </div>
+            <a href="#" class="see-details-btn">See details</a>
+          </div> -->
         </div>
       </section>
     </div>
+      <div class="see__details">
+        <button
+            type="button"
+            class="btn recipe-close-btn btn"
+            id="recipe-close-btn"
+          >
+            <i class="fas fa-times"></i>
+          </button>
+        <div class="see-details-content">
+        <h2>Recipe title</h2>
+        <h3>Instructions:</h3>
+        <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ad aspernatur sequi amet id itaque vel, perspiciatis minima sint voluptates quasi possimus eaque doloribus impedit quidem veritatis molestiae dolore! Iusto, tempora?</p>
+        <h3>Ingredients:</h3>
+        <ul class="detailed-instruction-list">
+          <li>Lorem1</li>
+          <li>Lorem2</li>
+          <li>Lorem3</li>
+          <li>Lorem4</li>
+          <li>Lorem5</li>
+        </ul>
+        <img src="img/ziti-style.webp" alt="">
+      </div>
+      </div>
+      <div class="overlay hidden"></div>
     <script src="app.js"></script>
   </body>
 </html>
