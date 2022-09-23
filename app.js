@@ -147,8 +147,8 @@ function getRecipesList(e) {
 
     if (intersection.length > 0) {
       const ingridientItems = rec.ingredients
-        .map(ingridient => `<li>- ${ingridient}</li>`)
-        .join('');
+        .map(ingridient => `<li>${ingridient}</li>`)
+        .join(', ');
       const html = `
     <div class="recipe-container">
     <div class="img"><img src="img/${rec.img}" alt="" /></div>
