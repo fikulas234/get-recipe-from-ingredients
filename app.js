@@ -3,10 +3,10 @@ const recipes = [
     title: 'Strawberry Banana Smothie',
     ingredients: ['Strawberries', 'Banana', 'Greek yogurt', 'Milk'],
     detailedIngredients: [
-      ['2 cups fresh strawberries, halved'],
-      ['1 banana, quartered and frozen'],
-      ['1/2 cup Greek yogurt'],
-      ['1/2 cup milk'],
+      '2 cups fresh strawberries, halved',
+      '1 banana, quartered and frozen',
+      '1/2 cup Greek yogurt',
+      '1/2 cup milk',
     ],
     instructions:
       'Add all ingredients to a high powered blender and blend until smooth.',
@@ -96,37 +96,48 @@ const recipeCloseBtn = document.querySelector('.recipe-close-btn');
 const overlay = document.querySelector('.overlay');
 const suggestion = document.querySelector('.try');
 
+mealList.addEventListener('click', getMealRecipe);
+searchBtn.addEventListener('click', getRecipesList);
+recipeCloseBtn.addEventListener('click', closeModal);
+overlay.addEventListener('click', closeModal);
+
 let getIngredient = [];
 
 // Functions
-const getRecipesList = function (e) {
+function getRecipesList(e) {
   e.preventDefault();
-
+  if (!searchLabel.value) return;
+  // dodamo ing
+  // filtriramo
+  // dodamo recepte
+  // getIngredient = [];
   containerRecipe.innerHTML = '';
+  ingredientsBtn.innerHTML = '';
 
-  if (
-    getIngredient.indexOf(
-      searchLabel.value[0].toUpperCase() +
-        searchLabel.value.slice(1).toLowerCase()
-    ) === -1
-  ) {
-    getIngredient.push(
-      searchLabel.value[0].toUpperCase() +
-        searchLabel.value.slice(1).toLowerCase()
-    );
+  if (!getIngredient.includes(searchLabel.value)) {
+    getIngredient.push(searchLabel.value);
   }
-
+  // if (
+  //   getIngredient.indexOf(
+  //     searchLabel.value[0].toUpperCase() +
+  //       searchLabel.value.slice(1).toLowerCase()
+  //   ) === -1
+  // ) {
+  //   getIngredient.push(
+  //     searchLabel.value[0].toUpperCase() +
+  //       searchLabel.value.slice(1).toLowerCase()
+  //   );
+  // }
   getIngredient.forEach(function (ingr) {
     let ingrs = [];
-
-    if (ingrs.indexOf(ingr) === -1) {
+    if (getIngredient.includes(ingr)) {
       ingrs.push(ingr);
       const arrIngrs = `<button>
       <span>${ingrs}</span>
       </button>`;
       ingredientsBtn.insertAdjacentHTML('afterbegin', arrIngrs);
     }
-    console.log(ingrs);
+    // console.log(ingrs);
   });
 
   recipes.forEach(function (rec) {
@@ -134,26 +145,26 @@ const getRecipesList = function (e) {
       getIngredient.includes(ingr)
     );
 
-    const title = rec.title;
-    const ingredient = rec.ingredients;
-    const img = rec.img;
-    const id = rec.idMeal;
-
     if (intersection.length > 0) {
+      const ingridientItems = rec.ingredients
+        .map(ingridient => `<li>- ${ingridient}</li>`)
+        .join('');
       const html = `
     <div class="recipe-container">
-    <div class="img"><img src="img/${img}" alt="" /></div>
+    <div class="img"><img src="img/${rec.img}" alt="" /></div>
     <div class="recipe__item">
     <p>
-    <h3 class="recipe__title">${title}</h3>
+    <h3 class="recipe__title">${rec.title}</h3>
         <span>ingredients:</span>
         <ul class="ingredients__list">
-          ${ingredient}
+          <li></li>
+          ${ingridientItems}
         </ul>
       </p>
-      <a href="#" data-id="${id}" class="see-details-btn">See details</a>
+      <a href="#" data-id="${rec.idMeal}" class="see-details-btn">See details</a>
     </div>
-    </div>`;
+    </div>
+    `;
       containerRecipe.insertAdjacentHTML('afterbegin', html);
     }
 
@@ -163,17 +174,15 @@ const getRecipesList = function (e) {
   // console.log('Ingredients:', getIngredient);
   searchLabel.value = '';
   suggestion.classList.add('hidden');
-  ingredientsSection.classList.remove('remove');
-};
+}
 
-const getMealRecipe = function (e) {
+function getMealRecipe(e) {
   e.preventDefault();
   if (e.target.classList.contains('see-details-btn')) {
-    let mealItem = Number(e.target.dataset.id);
+    const mealItem = Number(e.target.dataset.id);
     recipeModal(mealItem);
-    // console.log(mealItem);
   }
-};
+}
 
 const recipeModal = function (id) {
   const foundMeal = recipes.find(rec => rec.idMeal === id);
@@ -192,10 +201,10 @@ const recipeModal = function (id) {
   overlay.classList.remove('hidden');
 };
 
-const closeModal = function () {
+function closeModal() {
   seeRecipe.classList.remove('showRecipe');
   overlay.classList.add('hidden');
-};
+}
 
 document.addEventListener('keydown', function (e) {
   if (e.key === 'Escape' && seeRecipe.classList.contains('showRecipe')) {
@@ -204,9 +213,5 @@ document.addEventListener('keydown', function (e) {
 });
 
 // Event listeners
-mealList.addEventListener('click', getMealRecipe);
-searchBtn.addEventListener('click', getRecipesList);
-recipeCloseBtn.addEventListener('click', closeModal);
-overlay.addEventListener('click', closeModal);
 
 ////////////////////////////////
