@@ -43,7 +43,7 @@ h1 {
   border-radius: 100px;
   padding: 8px 18px 8px 44px;
   position: relative;
-  margin-right: 5px;
+  margin: 5px 5px;
 }
 
 .your-ingredients-container button::before {
@@ -67,10 +67,6 @@ h1 {
   left: 23px;
   top: calc(50% - 9px);
   background-color: var(--royal-blue);
-}
-
-.try span {
-  font-weight: bold;
 }
 
 .container {
@@ -131,11 +127,28 @@ img {
   color: var(--royal-blue);
 }
 
-.ingredients__list {
-  list-style: none;
-  display: flex;
+.ingredients-span {
+  font-weight: bold;
+  margin-top: 20px;
 }
 
+.ingredients__list {
+  list-style: none;
+}
+.ingredients__list li {
+  display: inline-block;
+  margin: 0;
+  padding: 0;
+}
+
+.ingredients__list li:not(:last-child):after {
+  content: ', ';
+  white-space: pre;
+}
+
+.ingredients__list li:last-child::after {
+  content: '.';
+}
 .search__input,
 .search__btn {
   width: 100%;
@@ -277,4 +290,33 @@ img {
 
 .remove {
   display: none;
+}
+
+@media only screen and (max-width: 600px) {
+  .see__details {
+    width: 360px;
+  }
+
+  .recipe-close-btn {
+    right: 5px;
+    top: 5px;
+    font-size: 20px;
+    width: 25px;
+    height: 25px;
+  }
+}
+@media only screen and (min-width: 600px) {
+  .see__details {
+    width: 500px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .see__details {
+    width: 660px;
+  }
+}
+@media only screen and (min-width: 992px) {
+  .see__details {
+    width: 750px;
+  }
 }

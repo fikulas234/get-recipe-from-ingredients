@@ -1,105 +1,26 @@
-const recipes = [
-  {
-    title: 'Strawberry Banana Smothie',
-    ingredients: ['Strawberries', 'Banana', 'Greek yogurt', 'Milk'],
-    detailedIngredients: [
-      '2 cups fresh strawberries, halved',
-      '1 banana, quartered and frozen',
-      '1/2 cup Greek yogurt',
-      '1/2 cup milk',
-    ],
-    instructions:
-      'Add all ingredients to a high powered blender and blend until smooth.',
-    img: 'strawberry-banana.webp',
-    idMeal: 1,
-  },
-
-  {
-    title: 'Mango Smoothie',
-    ingredients: ['Mangoe', 'Banana', 'Milk', 'Yogurt'],
-    detailedIngredients: [
-      ['2 fresh mangoes or 2 cups of frozen mango'],
-      [
-        '1 small frozen banana (or half of a large banana), you can use unfrozen if using frozen mango',
-      ],
-      ['1/2 cup milk, dairy or dairy-free'],
-      ['1/2 cup yogurt, dairy or dairy-free'],
-    ],
-    instructions:
-      'Add all ingredients to a high-powered blender and blend until creamy.',
-    img: 'mango-smoothie.webp',
-    idMeal: 2,
-  },
-
-  {
-    title: 'Mandarin Breakfast Smoothie',
-    ingredients: [
-      'Milk',
-      'Yogurt',
-      'Mandarin Oranges',
-      'Banana',
-      'Ground Flaxseeds',
-      'Vanilla Extract',
-    ],
-    detailedIngredients: [
-      ['1 ½ cups milk, dairy or dairy-free'],
-      ['1 cup yogurt, dairy or dairy-free'],
-      ['4 mandarin oranges, peeled'],
-      ['4 mandarin oranges, peeled'],
-      ['2 tablespoons ground flaxseeds'],
-      ['1 teaspoon vanilla extract'],
-    ],
-    instructions:
-      'Add all of the ingredients to a high powered blender, and blend until smooth.',
-    img: 'mandarin-breakfast.webp',
-    idMeal: 3,
-  },
-
-  {
-    title: 'Peach Breakfast Smoothie',
-    ingredients: [
-      'Peach',
-      'Milk',
-      'Yogurt',
-      'Vanilla Extract',
-      'Cinnamon',
-      'Ginger',
-      'Chia ',
-    ],
-    detailedIngredients: [
-      ['3 peaches, pitted and quartered'],
-      ['1 1/2 cups milk, dairy or dairy-free'],
-      ['1 cup yogurt, dairy or dairy-free'],
-      ['1 tsp vanilla extract'],
-      ['sprinkle of cinnamon'],
-      ['sprinkle of ground ginger'],
-      ['2 tbsp chia seeds, divided'],
-    ],
-    instructions:
-      'Add all ingredients except the chia seeds to a high-powered blender. Blend on high until smooth and creamy. Then divide the peach smoothie between two Le Parfait jars or Mason jars. Add one tablespoon of chia seeds, add the lid and shake until well combined.',
-    img: 'peach-breakfast.webp',
-    idMeal: 4,
-  },
-];
+import { recipes } from './recipes.js';
 
 ////////////////////////////////
 
 const searchBtn = document.querySelector('.search__btn');
 const searchLabel = document.querySelector('.search__input');
 const containerRecipe = document.querySelector('.found-recipes');
-const ingredientsBtn = document.querySelector('.your-ingredients-container');
-const ingredientsSection = document.querySelector('.your-ingredients-section');
-const mealList = document.getElementById('meal');
+const ingredientsContainer = document.querySelector(
+  '.your-ingredients-container'
+);
+// const ingredientsSection = document.querySelector('.your-ingredients-container');
+const mealList = document.querySelector('.meal');
 const seeRecipe = document.querySelector('.see__details');
 const detailsContent = document.querySelector('.see-details-content');
 const recipeCloseBtn = document.querySelector('.recipe-close-btn');
-const overlay = document.querySelector('.overlay');
-const suggestion = document.querySelector('.try');
+const overlayBlur = document.querySelector('.overlay');
 
+// Event listeners
 mealList.addEventListener('click', getMealRecipe);
 searchBtn.addEventListener('click', getRecipesList);
 recipeCloseBtn.addEventListener('click', closeModal);
-overlay.addEventListener('click', closeModal);
+overlayBlur.addEventListener('click', closeModal);
+ingredientsContainer.addEventListener('click', removeIngredient);
 
 let getIngredient = [];
 
@@ -112,55 +33,38 @@ function getRecipesList(e) {
   // dodamo recepte
   // getIngredient = [];
   containerRecipe.innerHTML = '';
-  ingredientsBtn.innerHTML = '';
+  ingredientsContainer.innerHTML = '';
 
   if (!getIngredient.includes(searchLabel.value)) {
     getIngredient.push(searchLabel.value);
   }
-  // if (
-  //   getIngredient.indexOf(
-  //     searchLabel.value[0].toUpperCase() +
-  //       searchLabel.value.slice(1).toLowerCase()
-  //   ) === -1
-  // ) {
-  //   getIngredient.push(
-  //     searchLabel.value[0].toUpperCase() +
-  //       searchLabel.value.slice(1).toLowerCase()
-  //   );
-  // }
-  getIngredient.forEach(function (ingr) {
-    let ingrs = [];
-    if (getIngredient.includes(ingr)) {
-      ingrs.push(ingr);
-      const arrIngrs = `<button>
-      <span>${ingrs}</span>
+
+  getIngredient.forEach(function (ingr, i) {
+    const addedIngredients = `<button data-num="${i}" class="ingrBtn">
+      <span>${ingr}</span>
       </button>`;
-      ingredientsBtn.insertAdjacentHTML('afterbegin', arrIngrs);
-    }
-    // console.log(ingrs);
+    ingredientsContainer.insertAdjacentHTML('beforeend', addedIngredients);
+    i++;
   });
 
   recipes.forEach(function (rec) {
-    const intersection = rec.ingredients.filter(ingr =>
+    const foundIngredients = rec.ingredients.filter(ingr =>
       getIngredient.includes(ingr)
     );
-
-    if (intersection.length > 0) {
-      const ingridientItems = rec.ingredients
-        .map(ingridient => `<li>${ingridient}</li>`)
-        .join(', ');
+    // foundIngredients.forEach(ing => console.log(ing));
+    if (foundIngredients.length > 0) {
+      const ingredientItems = rec.ingredients
+        .map(ingredient => `<li>${ingredient}</li>`)
+        .join('');
       const html = `
     <div class="recipe-container">
     <div class="img"><img src="img/${rec.img}" alt="" /></div>
     <div class="recipe__item">
-    <p>
     <h3 class="recipe__title">${rec.title}</h3>
-        <span>ingredients:</span>
+        <span class="ingredients-span">Ingredients:</span>
         <ul class="ingredients__list">
-          <li></li>
-          ${ingridientItems}
+          ${ingredientItems}
         </ul>
-      </p>
       <a href="#" data-id="${rec.idMeal}" class="see-details-btn">See details</a>
     </div>
     </div>
@@ -171,21 +75,20 @@ function getRecipesList(e) {
     // console.log('Intersection:', intersection);
     // console.log('ingredients:', ingredient);
   });
-  // console.log('Ingredients:', getIngredient);
-  searchLabel.value = '';
-  suggestion.classList.add('hidden');
+  // searchLabel.value = '';
+  console.log('Ingredients:', getIngredient);
 }
 
 function getMealRecipe(e) {
   e.preventDefault();
   if (e.target.classList.contains('see-details-btn')) {
-    const mealItem = Number(e.target.dataset.id);
-    recipeModal(mealItem);
+    const mealId = Number(e.target.dataset.id);
+    recipeModal(mealId);
   }
 }
 
-const recipeModal = function (id) {
-  const foundMeal = recipes.find(rec => rec.idMeal === id);
+const recipeModal = function (mealId) {
+  const foundMeal = recipes.find(rec => rec.idMeal === mealId);
   const html = `
   <h2>${foundMeal.title}</h2>
         <h3>Ingredients:</h3>
@@ -198,12 +101,12 @@ const recipeModal = function (id) {
   `;
   detailsContent.innerHTML = html;
   seeRecipe.classList.add('showRecipe');
-  overlay.classList.remove('hidden');
+  overlayBlur.classList.remove('hidden');
 };
 
 function closeModal() {
   seeRecipe.classList.remove('showRecipe');
-  overlay.classList.add('hidden');
+  overlayBlur.classList.add('hidden');
 }
 
 document.addEventListener('keydown', function (e) {
@@ -212,6 +115,13 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
-// Event listeners
+function removeIngredient(e) {
+  if (e.target.classList.contains('ingrBtn')) {
+    const index = e.target.dataset.num;
+    console.log(index);
+    getIngredient.splice(index, 1);
+    console.log(getIngredient);
+  }
+}
 
 ////////////////////////////////
