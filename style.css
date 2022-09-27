@@ -149,6 +149,7 @@ img {
 .ingredients__list li:last-child::after {
   content: '.';
 }
+
 .search__input,
 .search__btn {
   width: 100%;
@@ -290,6 +291,10 @@ img {
 
 .remove {
   display: none;
+}
+
+strong {
+  color: var(--darker-blue);
 }
 
 @media only screen and (max-width: 600px) {

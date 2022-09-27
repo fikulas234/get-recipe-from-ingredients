@@ -39,24 +39,19 @@ function getRecipesList(e) {
     getIngredient.push(searchLabel.value);
   }
 
-  getIngredient.forEach(function (ingr, i) {
-    const addedIngredients = `<button data-num="${i}" class="ingrBtn">
-      <span>${ingr}</span>
-      </button>`;
-    ingredientsContainer.insertAdjacentHTML('beforeend', addedIngredients);
-    i++;
-  });
+  currentIngredients(getIngredient);
 
   recipes.forEach(function (rec) {
     const foundIngredients = rec.ingredients.filter(ingr =>
       getIngredient.includes(ingr)
     );
-    // foundIngredients.forEach(ing => console.log(ing));
+
     if (foundIngredients.length > 0) {
       const ingredientItems = rec.ingredients
         .map(ingredient => `<li>${ingredient}</li>`)
         .join('');
-      const html = `
+      console.log(ingredientItems);
+      let html = `
     <div class="recipe-container">
     <div class="img"><img src="img/${rec.img}" alt="" /></div>
     <div class="recipe__item">
@@ -69,14 +64,18 @@ function getRecipesList(e) {
     </div>
     </div>
     `;
+
+      foundIngredients.forEach(function (ingr) {
+        html = html.replace(ingr, `<strong>${ingr}</strong>`);
+      });
       containerRecipe.insertAdjacentHTML('afterbegin', html);
     }
 
-    // console.log('Intersection:', intersection);
-    // console.log('ingredients:', ingredient);
+    // console.log('Intersection:', foundIngredients);
+    // console.log('ingredients:', ingredientItems);
   });
-  // searchLabel.value = '';
-  console.log('Ingredients:', getIngredient);
+  searchLabel.value = '';
+  // console.log('Ingredients:', getIngredient);
 }
 
 function getMealRecipe(e) {
@@ -115,13 +114,24 @@ document.addEventListener('keydown', function (e) {
   }
 });
 
+function currentIngredients(curIngrs) {
+  curIngrs.forEach(function (ingr, i) {
+    const addedIngredients = `<button data-num="${i}" class="ingrBtn">
+      <span>${ingr}</span>
+      </button>`;
+    ingredientsContainer.insertAdjacentHTML('beforeend', addedIngredients);
+    i++;
+  });
+}
+
 function removeIngredient(e) {
   if (e.target.classList.contains('ingrBtn')) {
     const index = e.target.dataset.num;
     console.log(index);
     getIngredient.splice(index, 1);
-    console.log(getIngredient);
+    ingredientsContainer.innerHTML = '';
   }
+  currentIngredients(getIngredient);
 }
 
 ////////////////////////////////
