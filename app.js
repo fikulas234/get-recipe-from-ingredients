@@ -131,17 +131,15 @@ function currentIngredients(curIngrs) {
 }
 
 function removeIngredient(e) {
-  if (
-    e.target.parentElement.parentElement.classList.contains(
-      'your-ingredients-container'
-    )
-  ) {
+  if (e.target.parentElement.classList.contains('your-ingredients-container')) {
     const index = e.target.dataset.num;
     getIngredient.splice(index, 1);
     ingredientsContainer.innerHTML = '';
-    currentIngredients(getIngredient);
-    getRecipesList(e);
+  } else {
+    return;
   }
+  currentIngredients(getIngredient);
+  getRecipesList(e);
 }
 
 ////////////////////////////////
