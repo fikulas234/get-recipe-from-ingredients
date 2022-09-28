@@ -62,7 +62,7 @@ export const recipes = [
       'Vanilla Extract',
       'Cinnamon',
       'Ginger',
-      'Chia ',
+      'Chia',
     ],
     detailedIngredients: [
       '3 peaches, pitted and quartered',

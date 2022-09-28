@@ -25,21 +25,25 @@ ingredientsContainer.addEventListener('click', removeIngredient);
 let getIngredient = [];
 
 // Functions
-function getRecipesList(e) {
-  e.preventDefault();
+function ingredientsPush() {
   if (!searchLabel.value) return;
-  // dodamo ing
-  // filtriramo
-  // dodamo recepte
-  // getIngredient = [];
+
   containerRecipe.innerHTML = '';
   ingredientsContainer.innerHTML = '';
 
   if (!getIngredient.includes(searchLabel.value)) {
-    getIngredient.push(searchLabel.value);
+    getIngredient.push(
+      searchLabel.value.charAt(0).toUpperCase() + searchLabel.value.slice(1)
+    );
   }
 
   currentIngredients(getIngredient);
+}
+
+function getRecipesList(e) {
+  e.preventDefault();
+
+  ingredientsPush();
 
   recipes.forEach(function (rec) {
     const foundIngredients = rec.ingredients.filter(ingr =>
@@ -47,10 +51,17 @@ function getRecipesList(e) {
     );
 
     if (foundIngredients.length > 0) {
-      const ingredientItems = rec.ingredients
+      let ingredientItems = rec.ingredients
         .map(ingredient => `<li>${ingredient}</li>`)
         .join('');
-      console.log(ingredientItems);
+
+      foundIngredients.forEach(function (ingr) {
+        ingredientItems = ingredientItems.replace(
+          ingr,
+          `<strong>${ingr}</strong>`
+        );
+      });
+
       let html = `
     <div class="recipe-container">
     <div class="img"><img src="img/${rec.img}" alt="" /></div>
@@ -65,17 +76,12 @@ function getRecipesList(e) {
     </div>
     `;
 
-      foundIngredients.forEach(function (ingr) {
-        html = html.replace(ingr, `<strong>${ingr}</strong>`);
-      });
       containerRecipe.insertAdjacentHTML('afterbegin', html);
+    } else {
+      containerRecipe.innerHTML = '';
     }
-
-    // console.log('Intersection:', foundIngredients);
-    // console.log('ingredients:', ingredientItems);
   });
   searchLabel.value = '';
-  // console.log('Ingredients:', getIngredient);
 }
 
 function getMealRecipe(e) {
@@ -125,13 +131,21 @@ function currentIngredients(curIngrs) {
 }
 
 function removeIngredient(e) {
-  if (e.target.classList.contains('ingrBtn')) {
+  if (
+    e.target.parentElement.parentElement.classList.contains(
+      'your-ingredients-container'
+    )
+  ) {
     const index = e.target.dataset.num;
-    console.log(index);
     getIngredient.splice(index, 1);
     ingredientsContainer.innerHTML = '';
+    currentIngredients(getIngredient);
+    getRecipesList(e);
   }
-  currentIngredients(getIngredient);
 }
 
 ////////////////////////////////
+// const word = w => w === 'Milk';
+/* recipes.forEach(rec =>
+  console.log(rec.ingredients.some(word => word === searchLabel.value))
+); */
